@@ -5,13 +5,14 @@
 - Parsing JSON response
 - Sending collected metrics as JSON payload to external webhook
 - Deployable framework using spring-boot-camel
-- Sample of ActiveMQ Metrics in this demo
-TotalMessageCount
-ConnectionCount
-PeakThreadCount
-HeapMemoryUsage
-DiskStoreUsage
-ProcessCpuLoad
+
+## Sample of ActiveMQ Metrics in this demo
+- TotalMessageCount
+- ConnectionCount
+- PeakThreadCount
+- HeapMemoryUsage
+- DiskStoreUsage
+- ProcessCpuLoad
 
 # Future Enhancement Ideas
 - Compare each metrics response to alert threshold defined in ```application.properties```
@@ -30,7 +31,7 @@ http://{broker-host}:8161/console/jolokia/read/org.apache.activemq.artemis:broke
 # Installation
 - Clone the parent repo ```camel-spring-boot-examples```
 - A sample shell script is included in the home directory of repo ```amq-alerts/mycurl.sh```
-- Note: the script is pointing to a local instance of ActiveMQ/Artemis.  Please update the according to your own environment.
+- Note: the script is pointing to a local instance of ActiveMQ/Artemis.  Please update the env variables ($AMQUSER, $AMQPASWD, $AMQHOST) with your specific environment.
 - Edit ```src/main/resources/application.properties``` with following changes according to your specific environment
 - Update the property ```management.endpoints.config``` to point to the absolute path containing ```mycurl.sh```
 - For example: ```management.endpoints.config = /Users/foobar/amq-alerts/mycurl.sh```
