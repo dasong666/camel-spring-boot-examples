@@ -1,6 +1,7 @@
 # Simple AMQ Metrics Alerting - Design Overview
 - Set of core ActiveMQ metrics as Camel Routes
 - Each route is wrapped in a configurable timer
+- Timer is configurable in the ```timer.period``` parameter of ```application.properties```
 - Parsing JSON response
 - Sending collected metrics as JSON payload to external webhook
 - Deployable framework using spring-boot-camel
