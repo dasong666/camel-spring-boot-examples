@@ -11,9 +11,22 @@
 - Set of core ActiveMQ metrics as Camel Routes
 - Each route is wrapped in a configurable timer
 - Parsing JSON response
-- Compare response to alert threshold in ```application.properties```
-- Positive trigger webhook alert via Camel Webhook route
-- #TODO#: define happy path and alternative (error-handling)
+- Sending collected metrics as JSON payload to external webhook
+- Deployable framework using spring-boot-camel
+- Sample of ActiveMQ Metrics in this demo
+TotalMessageCount
+ConnectionCount
+PeakThreadCount
+HeapMemoryUsage
+DiskStoreUsage
+ProcessCpuLoad
+
+# Future Enhancement Ideas
+- Compare each metrics response to alert threshold defined in ```application.properties```
+- Trigger customized alert
+- Define happy path and alternative flows (error-handling)
+- Use Prometheus ActiveMQ plugin to collect metrics
+- Setup Grafana dashboard using Prometheus metrics data source
 
 # ActiveMQ Artemis Monitoring API's
 - REST style Jolokia API endpoints
