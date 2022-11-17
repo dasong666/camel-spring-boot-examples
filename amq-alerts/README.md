@@ -1,4 +1,4 @@
-`# Design Overview
+# Simple AMQ Metrics Alerting - Design Overview
 - Set of core ActiveMQ metrics as Camel Routes
 - Each route is wrapped in a configurable timer
 - Parsing JSON response
