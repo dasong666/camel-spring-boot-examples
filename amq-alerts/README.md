@@ -27,7 +27,7 @@ http://{broker-host}:8161/console/jolokia/read/org.apache.activemq.artemis:broke
 ```
 
 # Installation
-- Clone this repository
+- Clone the parent repo ```camel-spring-boot-examples```
 - A sample shell script is included in the home directory of repo ```amq-alerts/mycurl.sh```
 - Note: the script is pointing to a local instance of ActiveMQ/Artemis.  Please update the according to your own environment.
 - Edit ```src/main/resources/application.properties``` with following changes according to your specific environment
