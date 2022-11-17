@@ -24,12 +24,12 @@ http://{broker-host}:8161/console/jolokia/read/org.apache.activemq.artemis:broke
 
 # Installation
 - Clone this repository
-- A sample shell script is included in the home directory of repo ```mycurl.sh```
+- A sample shell script is included in the home directory of repo ```amq-alerts/mycurl.sh```
 - Note: the script is pointing to a local instance of ActiveMQ/Artemis.  Please update the according to your own environment.
 - Edit ```src/main/resources/application.properties```
 and update the property ```management.endpoints.config``` to point to the absolute path containing ```mycurl.sh```
 - For example: ```/Users/foobar/amq-alerts/mycurl.sh```
-- From the directory containing your ```pom.xml``` run the following Maven command to start the application
+- From the ```amq-alerts``` subdirectory containing your ```pom.xml``` run the following Maven command to start the application
 ```shell
 mvn spring-boot:run
 ```
