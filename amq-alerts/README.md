@@ -1,13 +1,4 @@
-# AMQ-Alerts
-
-- Using Camel Libraries
-- Have a camel context that can scrap broker JMX metrics and have them processed.
-- Alert rules defined in ```application.properties```  something like: rule name, condition, time interval
-- When that rule fires, then it will send a message to another Camel Route
-- This camel route will agnostically grab the alert message and send to an Email recipiant
-- The email configuraiton is also in the ```application.properties```
-
-# Design Overview
+`# Design Overview
 - Set of core ActiveMQ metrics as Camel Routes
 - Each route is wrapped in a configurable timer
 - Parsing JSON response
