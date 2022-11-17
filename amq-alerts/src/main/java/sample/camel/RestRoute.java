@@ -53,60 +53,17 @@ from("timer:hello?period={{timer.period}}")
       List<Integer> propList = new ArrayList<Integer>();
 
       String myBody = exchange.getIn().getBody(String.class);
-      System.out.println("$$$$$$$$$$ myBody: "+myBody);
-      String totalMsg = exchange.getContext().resolvePropertyPlaceholders("{{total.message.count.threshold}}");
-      propList.add(Integer.parseInt(totalMsg));
-      String totalThread = exchange.getContext().resolvePropertyPlaceholders("{{peak.thread.count.threshold}}");
-      propList.add(Integer.parseInt(totalThread));
-      String totalConn = exchange.getContext().resolvePropertyPlaceholders("{{connection.count.threshold}}");
-      propList.add(Integer.parseInt(totalConn));
-      String totalQueueMsg = exchange.getContext().resolvePropertyPlaceholders("{{queue.message.count.threshold}}");
-      propList.add(Integer.parseInt(totalQueueMsg));
-      String totalMem = exchange.getContext().resolvePropertyPlaceholders("{{address.memory.threshold}}");
-      float memPercent = Float.parseFloat(totalMem);
-      String totalDisk = exchange.getContext().resolvePropertyPlaceholders("{{diskstore.usage.threshold}}");
-      float diskPercent = Float.parseFloat(totalDisk);
-      String totalCpu = exchange.getContext().resolvePropertyPlaceholders("{{process.cpu.load.threshold}}");
-      float cpuPercent = Float.parseFloat(totalCpu);
-      
-      String emailAddress = exchange.getContext().resolvePropertyPlaceholders("{{application.email.emailAddress}}"); 
-      exchange.getIn().setBody("{\n"
- 	+ "  \"body\": \"" + myBody + "\" ,\n"
-    	+ "  \"emailAddress\": \"" + emailAddress + "\",\n"
-    	+ "  \"subject\": \"Manual Processing queue\"\n"
-    	+ "}");
+      exchange.getIn().setBody(myBody);
     
-      List<String> matchList = new ArrayList<String>();
-      Pattern pattern = Pattern.compile("(?<=value\":).*?(?=,)");
-      Matcher matcher = pattern.matcher(myBody);
-      while ( matcher.find( ) ) {
-         matchList.add(matcher.group());
-      }
-      int temp = 0;
-      Map<Integer,Integer> alertMap = new LinkedHashMap<Integer,Integer>(20,0.75f,false);
-      for (int i=0; i<matchList.size(); i++) {
-         temp = Integer.parseInt(matchList.get(i));
-         if ( temp >= propList.get(i) ) {
-            alertMap.put(i,temp);
-         }
-      }
-      Set entrySet = alertMap.entrySet();
-      Iterator it = entrySet.iterator();
-      System.out.println("LinkedHashMap entries : ");
-  
-      boolean alert = false;
-        while (it.hasNext()) {
-            System.out.println(it.next());
-            alert = true;
-        }
+    
    } //end process
 })
-.log("@@@@@"+"${headers}")
-//.log("!!!!!"+"${body}")
-.log("*** Sending email ***")
-.to("smtps://smtp.gmail.com:465?username=foo&password=bar&debugMode=true&mail.smtp.auth=true&mail.smtp.starttls.enable=true");
+.log("${headers}")
+.log("${body}")
+.log("*** Sending to Webhook ***")
+.setHeader(Exchange.HTTP_METHOD, constant("POST"))
+.to("{{application.webhook.endpoint}}");
 	
-//.to("smtp://{{smtp.host}}?username={{smtp.username}}&password={{smtp.password}}&from={{smtp.from.email}}&contentType={{smtp.contentType}}")
     }
 
 }
