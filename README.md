@@ -12,7 +12,7 @@
 - Each route is wrapped in a configurable timer
 - Parsing JSON response
 - Compare response to alert threshold in ```application.properties```
-- Positive trigger email alert via Camel SMTP route
+- Positive trigger webhook alert via Camel Webhook route
 - #TODO#: define happy path and alternative (error-handling)
 
 # ActiveMQ Artemis Monitoring API's
