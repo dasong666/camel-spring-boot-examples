@@ -39,3 +39,30 @@ http://{broker-host}:8161/console/jolokia/read/org.apache.activemq.artemis:broke
 ```shell
 mvn spring-boot:run
 ```
+
+- If everything is installed and running correctly and if you have setup your own webhook to receive the alert, you should see something like following output
+```shell
+"TotalMessageCount"
+8
+"ConnectionCount"
+0
+"PeakThreadCount"
+40
+"DiskStoreUsage"
+0.11004711198685213
+"HeapMemoryUsage"
+{
+  "init": 536870912,
+  "committed": 538968064,
+  "max": 2147483648,
+  "used": 214944288
+}
+"ProcessCpuLoad"
+0.0006203481233881817
+```
+## Troubleshooting Tips
+- The ```amq-alerts/pom.xml``` references the parent ```camel-spring-boot-examples/pom.xml```
+- The ```amq-alerts/mycurl.sh``` on Unix/Linux requires "executable" file permissions
+```shell
+chmod 755 amq-alerts/mycurl.sh
+```
