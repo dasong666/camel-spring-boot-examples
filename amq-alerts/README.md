@@ -37,6 +37,10 @@ http://{broker-host}:8161/console/jolokia/read/org.apache.activemq.artemis:broke
 - For example: ```management.endpoints.config = /Users/foobar/amq-alerts/mycurl.sh```
 - Update the property ```application.webhook.endpoint``` to point to your own instance of Webhook/alert receiver
 - For example: ```application.webhook.endpoint = https://{your site}```
+- You can use the public free webhook.site for testing your alert receiving endpoint
+```shell
+https://webhook.site
+```
 - From the ```amq-alerts``` subdirectory containing your ```pom.xml``` run the following Maven command to start the application
 ```shell
 mvn spring-boot:run
