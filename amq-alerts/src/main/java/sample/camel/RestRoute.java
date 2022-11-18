@@ -43,8 +43,38 @@ public class RestRoute extends RouteBuilder {
     @Override
     public void configure() throws Exception {
 
+restConfiguration().host("{{amq.host}}").port("{{amq.port}}");
+
 from("timer:hello?period={{timer.period}}")
-    //.setHeader("id", simple("${random(1,3)}"))
+.process(new Processor() {
+   public void process(Exchange exchange) throws Exception {
+   
+      exchange.getIn().setHeader("Origin", "http://localhost");
+      exchange.getIn().setHeader("Authorization", "Basic dGVzdDpjYXRkb2cxMjM=");
+      exchange.getIn().setHeader("Accept", "application/json");
+   } //end process
+}) //end processor
+.to("{{amq.heap.memory.endpoint}}")
+.log("---------->>>> ${body}")
+.choice()
+    //.when().jsonpath("$.value.used", String.class).equals("foobar")
+    .when().jsonpath("$.value[?(@.used > 200000000)]")
+      .log("Heap Memory Alert!")
+      .setHeader(Exchange.HTTP_METHOD, constant("PUT"))
+      .setHeader(Exchange.CONTENT_TYPE, constant("application/json"))
+      .to("{{application.webhook.endpoint}}")
+      .process(new Processor() {
+          public void process(Exchange exchange) throws Exception {
+
+             String myBody = exchange.getIn().getBody(String.class);
+             exchange.getIn().setBody(myBody);
+          } //end process
+
+      })
+    .otherwise()
+      //.to("jms:queue:DLQ")
+      .log("No Alert")
+.end()
 .to("exec:{{management.endpoints.config}}")
 .process(new Processor() {
 
@@ -62,6 +92,7 @@ from("timer:hello?period={{timer.period}}")
 .log("${body}")
 .log("*** Sending to Webhook ***")
 .setHeader(Exchange.HTTP_METHOD, constant("POST"))
+//.to("https://webhook.site/3aea0c2f-8b7a-4f8c-88f8-7fce277e96af");
 .to("{{application.webhook.endpoint}}");
 	
     }
