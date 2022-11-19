@@ -72,3 +72,13 @@ mvn spring-boot:run
 ```shell
 chmod 755 amq-alerts/mycurl.sh
 ```
+
+## Generate standalone executable JAR
+- Run the maven package goal, a JAR file will be generated in ```./target``` directory
+```shell
+mvn package
+```
+- The generated JAR file can be renamed and moved/copied to anywhere and run with this command
+```shell
+java -jar {your jar name}.jar
+```
