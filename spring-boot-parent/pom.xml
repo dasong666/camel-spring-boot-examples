@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project
+  xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.redhat.consulting.monitoring.spring-boot</groupId>
+  <artifactId>spring-boot-parent</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <packaging>pom</packaging>
+
+  <name>Monitoring :: Spring Boot Parent</name>
+  <description>Parent POM for Spring Boot Monitoring Applications</description>
+
+  <properties>
+    
+    <!-- Build Properties -->
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    
+    <!-- Camel Properties (from RH Integration 2022.Q4 -->
+    <camel-spring-boot-version>3.14.5.redhat-00012</camel-spring-boot-version>
+    <camel-spring-boot-version-00009>3.14.5.redhat-00009</camel-spring-boot-version-00009>
+    <spring-boot-version>2.6.10</spring-boot-version>
+    <version.activemq>7.8.6</version.activemq>
+    <version.artemis>2.16.0.redhat-00046</version.artemis>
+    
+    <!-- Maven Properties (from org.apache.camel/camel )-->
+    <version.maven-compiler-plugin>3.8.1</version.maven-compiler-plugin>
+    <version.maven-surefire-plugin>3.0.0-M5</version.maven-surefire-plugin>
+    <version.maven-failsafe-plugin>3.0.0-M4</version.maven-failsafe-plugin>
+
+  </properties>
+
+  <dependencyManagement>
+    <dependencies>
+    
+      <!-- Spring Boot BOM -->
+      <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-dependencies</artifactId>
+        <version>${spring-boot-version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+
+      <!-- Camel BOM -->
+      <dependency>
+        <groupId>org.apache.camel.springboot</groupId>
+        <artifactId>camel-spring-boot-bom</artifactId>
+        <version>${camel-spring-boot-version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+
+      <!-- 
+      <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-web</artifactId>
+        <version>${spring.boot.version}</version>
+      </dependency>
+      -->
+
+      <dependency>
+        <groupId>org.apache.camel.springboot</groupId>
+        <artifactId>camel-spring-boot-starter</artifactId>
+        <version>${camel-spring-boot-version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.camel.springboot</groupId>
+        <artifactId>camel-http-starter</artifactId>
+        <version>${camel-spring-boot-version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.camel.springboot</groupId>
+        <artifactId>camel-mail-starter</artifactId>
+        <version>${camel-spring-boot-version}</version>
+      </dependency>  
+      
+      <!-- Camel Dependencies -->
+      <dependency>
+        <groupId>org.apache.camel</groupId>
+        <artifactId>camel-mail</artifactId>
+        <version>${camel-spring-boot-version-00009}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.camel</groupId>
+        <artifactId>camel-jackson</artifactId>
+        <version>${camel-spring-boot-version-00009}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.camel</groupId>
+        <artifactId>camel-jsonpath</artifactId>
+        <version>${camel-spring-boot-version-00009}</version>
+      </dependency>
+      
+      <!-- Camel Test Dependencies -->
+      <dependency>
+        <groupId>org.apache.camel</groupId>
+        <artifactId>camel-test-spring-junit5</artifactId>
+        <version>${camel-spring-boot-version-00009}</version>
+      </dependency>
+
+    </dependencies>
+  </dependencyManagement>
+
+  <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.springframework.boot</groupId>
+          <artifactId>spring-boot-maven-plugin</artifactId>
+          <version>${spring-boot-version}</version>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
+                
+
+  <!-- Red Hat Repository -->
+  <repositories>
+    <repository>
+      <id>redhat-ga-repository</id>
+      <name>Red Hat General Availability repository (all)</name>
+      <url>https://maven.repository.redhat.com/ga/</url>
+      <layout>default</layout>
+      <releases>
+        <enabled>true</enabled>
+        <updatePolicy>never</updatePolicy>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+        <updatePolicy>never</updatePolicy>
+      </snapshots>
+    </repository>
+    <repository>
+      <id>redhat-ea-repository</id>
+      <name>Red Hat Early Access repository (all)</name>
+      <url>https://https://maven.repository.redhat.com/earlyaccess/all/</url>
+      <layout>default</layout>
+      <releases>
+        <enabled>true</enabled>
+        <updatePolicy>never</updatePolicy>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+        <updatePolicy>never</updatePolicy>
+      </snapshots>
+    </repository>
+  </repositories>
+
+  <!-- Red Hat Plugin Repository -->
+  <pluginRepositories>
+    <pluginRepository>
+      <id>redhat-ga-repository</id>
+      <name>Red Hat General Availability repository (all)</name>
+      <url>https://maven.repository.redhat.com/ga/</url>
+      <layout>default</layout>
+      <releases>
+        <enabled>true</enabled>
+        <updatePolicy>never</updatePolicy>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+        <updatePolicy>never</updatePolicy>
+      </snapshots>
+    </pluginRepository>
+    <pluginRepository>
+      <id>redhat-ea-repository</id>
+      <name>Red Hat General Availability repository (all)</name>
+      <url>https://https://maven.repository.redhat.com/earlyaccess/all/</url>
+      <layout>default</layout>
+      <releases>
+        <enabled>true</enabled>
+        <updatePolicy>never</updatePolicy>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+        <updatePolicy>never</updatePolicy>
+      </snapshots>
+    </pluginRepository>
+  </pluginRepositories>
+
+</project>
