@@ -60,7 +60,11 @@
       <groupId>org.apache.camel</groupId>
       <artifactId>camel-jsonpath</artifactId>
     </dependency>
-
+    <dependency>
+      <groupId>org.apache.camel</groupId>
+      <artifactId>camel-velocity</artifactId>
+    </dependency>
+    
     <dependency>
       <groupId>org.apache.camel.springboot</groupId>
       <artifactId>camel-spring-boot-starter</artifactId>

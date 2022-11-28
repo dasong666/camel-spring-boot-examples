@@ -1,0 +1,17 @@
+Hello,
+
+The following is a summary of ${headers.brokerName}:
+
+Active State           : ${headers.backup}
+Total Messages Added   : ${headers.totalMessagesAdded}
+Total Messages Ack'd   : ${headers.totalMessagesAckd}
+Uptime                 : ${headers.uptime}
+Storage Usage          : ${headers.diskStoreUsage}
+Connections            : ${headers.connections}
+Total Connections      : ${headers.totalConnections}
+
+Address Stats
+
+Number of Address ${headers.addressList.size} 
+
+Enjoy!

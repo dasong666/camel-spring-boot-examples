@@ -76,7 +76,7 @@ public class ArtemisJmxScraperRoute extends RouteBuilder {
 
 		// @formatter:off
 		from("timer:hello?period={{timer.period}}").routeId("monitoring.artemis.scraper")
-			.log("About to Scrape {{amq.brokerName}}");
+			.log("About to Scrape {{amq.brokerName}}")
 		
 		// TODO
 		// Scrap the Broker for various ObjectNames
@@ -86,6 +86,10 @@ public class ArtemisJmxScraperRoute extends RouteBuilder {
 		// TODO 
 		// Write a Java class that formats the email subject and email body based on the rules.
 		
+			.to("direct:determineNotification")
+			
+			.setHeader("sendSummary", constant("{{notification.summary}}"))
+			.to("direct:emailNotification");
 		
 		// @formatter:on
 

@@ -1,0 +1,7 @@
+Hello,
+
+The following broker ${headers.brokerName} has exceeded the
+memory threshold of ${headers.brokerMemoryThreshold} with
+a value of ${headers.brokerMemoryUtilization}.
+
+Enjoy!
