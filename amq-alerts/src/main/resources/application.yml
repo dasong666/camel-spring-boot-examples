@@ -1,0 +1,92 @@
+camel:
+  springboot:
+    name: AmqArtemisAlerting
+    jmx-enabled: false
+    
+    # keep Camel running
+    main-run-controller: true
+    
+    # verbose summary so you can see the pairing of routes and routes configurations
+    startup-summary-level: verbose
+
+amq:
+  brokers:
+    -
+      name: artemis
+      host: 192.168.0.18
+      jmxrmiPort: 1099
+      # active, passive
+      role: active
+      clustered: true
+      addressesToMonitor:
+        - DLQ
+        - ExpiryQueue
+        - TEST
+    -
+      name: artemisB
+      host: 192.168.0.18
+      jmxrmiPort: 1099
+      # active, passive
+      role: passive
+      clustered: false
+      addressesToMonitor:
+        - DLQ
+        - ExpiryQueue
+    -
+      name: artemisC
+      host: 192.168.0.18
+      jmxrmiPort: 1099
+      # active, passive
+      role: active
+      clustered: false
+      addressesToMonitor:
+        - DLQ
+        - ExpiryQueue
+
+smtp:
+  host: localhost
+  port: 1025
+  username: joe
+  password: joe
+  fromEmail: joe@joe.com
+  contentType: text/xml
+
+application:
+  alert: 
+    enabled: true
+    period: 30000
+  summary:
+    enabled: true
+    period: 10000
+    
+# If ActiveMQ Artemis summary notification is needed 
+notification.summary : true
+
+alert:
+  broker:
+    threshold.connections = 10
+    threshold.totalConnection = 30
+    threshold.diskStoreUsage = 40
+  address:
+    threshold.consumers = 5
+    threshold.messageCount = 50
+    
+    
+
+##webhook endpoint
+#application.webhook.endpoint = https://webhook.site/3aea0c2f-8b7a-4f8c-88f8-7fce277e96af
+#
+#
+#
+##alert configs
+#total.message.count.threshold = 6
+#peak.thread.count.threshold = 39
+#connection.count.threshold = 1000
+#queue.message.count.threshold = 5
+#address.memory.threshold = 0.85
+#diskstore.usage.threshold = 0.9
+#process.cpu.load.threshold = 1
+#
+##heap percentage used
+#heap.memory.limit = 300000000
+#broker.connection.count.threshold = 

@@ -4,13 +4,13 @@ import org.apache.camel.builder.RouteBuilder;
 import org.springframework.stereotype.Component;
 
 @Component
-public class DetermineNotificationRoute extends RouteBuilder {
+public class BrokerAlertRouteBuilder extends RouteBuilder {
 
 	@Override
 	public void configure() throws Exception {
 
 		// @formatter:off		
-		from("direct:determineNotification").routeId("monitoring.determine.notification")
+		from("direct:determineBrokerAlert").routeId("determine.broker.alert")
 		
 			// Load Up Broker Data
 			.setHeader("brokerName", constant("brokerNameActive"))

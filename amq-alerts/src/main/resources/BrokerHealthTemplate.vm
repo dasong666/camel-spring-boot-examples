@@ -2,7 +2,7 @@ Hello,
 
 The following is a summary of ${headers.brokerName}:
 
-Active State           : ${headers.backup}
+Active State           : ${headers.summaryBackup}
 Total Messages Added   : ${headers.totalMessagesAdded}
 Total Messages Ack'd   : ${headers.totalMessagesAckd}
 Uptime                 : ${headers.uptime}
