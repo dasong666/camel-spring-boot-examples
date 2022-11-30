@@ -26,7 +26,7 @@ provided Alert Monitoring UI can be very useful.
 
 Red Hat documentation provides an overview of monitoring
 considerations.  This can be found at the following 
-location: ``
+location: `https://access.redhat.com/documentation/en-us/red_hat_amq_broker/7.10/html/managing_amq_broker/assembly-br-monitoring-broker-runtime-metrics_managing#doc-wrapper`
 
 However, there are environments where OpenShift is not 
 available and installing additional monitoring applications
