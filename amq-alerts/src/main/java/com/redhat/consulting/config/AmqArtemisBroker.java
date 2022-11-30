@@ -4,19 +4,37 @@ import java.util.List;
 
 public class AmqArtemisBroker {
 
-	private String name;
+	private String brokerName;
+	private String username;
+	private String password;
 	private String host;
 	private String jmxrmiPort;
 	private List<String> addressesToMonitor;
 	private String role;
 	private boolean isClustered;
 
-	public String getName() {
-		return name;
+	public String getBrokerName() {
+		return brokerName;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setBrokerName(String brokerName) {
+		this.brokerName = brokerName;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 	public String getHost() {

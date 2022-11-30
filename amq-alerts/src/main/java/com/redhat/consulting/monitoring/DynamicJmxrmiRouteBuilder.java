@@ -10,8 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import com.redhat.consulting.config.AddressAlertThresholds;
 import com.redhat.consulting.config.AmqArtemisBroker;
 import com.redhat.consulting.config.AmqArtemisBrokers;
+import com.redhat.consulting.config.BrokerAlertThresholds;
 
 @Component
 public class DynamicJmxrmiRouteBuilder extends RouteBuilder {
@@ -21,6 +23,12 @@ public class DynamicJmxrmiRouteBuilder extends RouteBuilder {
 
 	@Autowired
 	private AmqArtemisBrokers amqProps = new AmqArtemisBrokers();
+
+	@Autowired
+	private BrokerAlertThresholds brokerAlertThresholds = new BrokerAlertThresholds();
+
+	@Autowired
+	private AddressAlertThresholds addressAlertThresholds = new AddressAlertThresholds();
 
 	@Value("${application.alert.enabled}")
 	private boolean applicationAlerts;
@@ -53,8 +61,8 @@ public class DynamicJmxrmiRouteBuilder extends RouteBuilder {
 
 			for (AmqArtemisBroker broker : brokers) {
 
-				this.camelContext.addRoutes(new AmqArtemisJmxAlertScraperRouteBuilder(broker.getName(),
-						broker.getHost(), broker.getJmxrmiPort(), broker.getRole(), broker.isClustered()));
+				this.camelContext.addRoutes(new AmqArtemisJmxAlertScraperRouteBuilder(broker, brokerAlertThresholds,
+						addressAlertThresholds));
 
 			}
 
@@ -66,8 +74,7 @@ public class DynamicJmxrmiRouteBuilder extends RouteBuilder {
 
 			for (AmqArtemisBroker broker : brokers) {
 
-				this.camelContext.addRoutes(new AmqArtemisJmxSummaryScraperRouteBuilder(broker.getName(),
-						broker.getHost(), broker.getJmxrmiPort()));
+				this.camelContext.addRoutes(new AmqArtemisJmxSummaryScraperRouteBuilder(broker));
 
 			}
 

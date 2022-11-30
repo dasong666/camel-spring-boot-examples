@@ -12,7 +12,9 @@ camel:
 amq:
   brokers:
     -
-      name: artemis
+      brokerName: artemis
+      username: joe
+      password: joe
       host: 192.168.0.18
       jmxrmiPort: 1099
       # active, passive
@@ -23,7 +25,9 @@ amq:
         - ExpiryQueue
         - TEST
     -
-      name: artemisB
+      brokerName: artemisB
+      username: joe
+      password: joe
       host: 192.168.0.18
       jmxrmiPort: 1099
       # active, passive
@@ -33,7 +37,9 @@ amq:
         - DLQ
         - ExpiryQueue
     -
-      name: artemisC
+      brokerName: artemisC
+      username: joe
+      password: joe
       host: 192.168.0.18
       jmxrmiPort: 1099
       # active, passive
@@ -50,28 +56,22 @@ smtp:
   password: joe
   fromEmail: joe@joe.com
   contentType: text/xml
-
+  
 application:
   alert: 
     enabled: true
     period: 30000
+    broker-thresholds:
+      connections: 1
+      totalConnections: 30
+      diskStoreUsage: 0.10
+      addressMemoryPercentage: 0.1
+    address-thresholds:
+      consumers: 0
+      messageCount: 1
   summary:
     enabled: true
-    period: 10000
-    
-# If ActiveMQ Artemis summary notification is needed 
-notification.summary : true
-
-alert:
-  broker:
-    threshold.connections = 10
-    threshold.totalConnection = 30
-    threshold.diskStoreUsage = 40
-  address:
-    threshold.consumers = 5
-    threshold.messageCount = 50
-    
-    
+    period: 60000    
 
 ##webhook endpoint
 #application.webhook.endpoint = https://webhook.site/3aea0c2f-8b7a-4f8c-88f8-7fce277e96af

@@ -55,10 +55,10 @@ public class AmqArtemisJmxManager {
 
 	}
 
-	public QueueControl getQueueControlMBean() throws Exception {
+	public QueueControl getQueueControlMBean(String address, String name) throws Exception {
 
 		queueObjectName = ObjectNameBuilder.create("org.apache.activemq.artemis", "0.0.0.0", true).getQueueObjectName(
-				SimpleString.toSimpleString("DLQ"), SimpleString.toSimpleString("DLQ"), RoutingType.ANYCAST);
+				SimpleString.toSimpleString(address), SimpleString.toSimpleString(name), RoutingType.ANYCAST);
 
 		queueControl = MBeanServerInvocationHandler.newProxyInstance(serverConnection, queueObjectName,
 				QueueControl.class, false);
