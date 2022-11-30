@@ -1,0 +1,15 @@
+Hello,
+
+#if( ${headers.brokerRoleAlert} == "true" )
+The following broker: ${headers.brokerName} is identified
+as having a broker role of ${headers.brokerRole}, however 
+their current role is ${headers.brokerRoleState}.
+#end
+
+#if( ${headers.clusteredAlert} == "true" )
+The following broker: ${headers.brokerName} is identified
+as having a clustered state of ${headers.isClustered}, however 
+their current state is ${headers.clusteredState}.
+#end
+
+Enjoy!

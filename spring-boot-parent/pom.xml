@@ -22,6 +22,7 @@
     <!-- Camel Properties (from RH Integration 2022.Q4 -->
     <camel-spring-boot-version>3.14.5.redhat-00012</camel-spring-boot-version>
     <camel-spring-boot-version-00009>3.14.5.redhat-00009</camel-spring-boot-version-00009>
+    <camel-velocity-spring-boot-version>3.10.0.fuse-800010-redhat-00001</camel-velocity-spring-boot-version>
     <spring-boot-version>2.6.10</spring-boot-version>
     <version.activemq>7.8.6</version.activemq>
     <version.artemis>2.16.0.redhat-00046</version.artemis>
@@ -54,14 +55,6 @@
         <scope>import</scope>
       </dependency>
 
-      <!-- 
-      <dependency>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-web</artifactId>
-        <version>${spring.boot.version}</version>
-      </dependency>
-      -->
-
       <dependency>
         <groupId>org.apache.camel.springboot</groupId>
         <artifactId>camel-spring-boot-starter</artifactId>
@@ -69,14 +62,16 @@
       </dependency>
       <dependency>
         <groupId>org.apache.camel.springboot</groupId>
-        <artifactId>camel-http-starter</artifactId>
-        <version>${camel-spring-boot-version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.camel.springboot</groupId>
         <artifactId>camel-mail-starter</artifactId>
         <version>${camel-spring-boot-version}</version>
-      </dependency>  
+      </dependency>
+      <!--  
+      <dependency>
+        <groupId>org.apache.camel.springboot</groupId>
+        <artifactId>camel-debug-starter</artifactId>
+        <version>${camel-spring-boot-version-00009}</version>
+      </dependency>
+      -->
       
       <!-- Camel Dependencies -->
       <dependency>
@@ -93,6 +88,11 @@
         <groupId>org.apache.camel</groupId>
         <artifactId>camel-jsonpath</artifactId>
         <version>${camel-spring-boot-version-00009}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.camel</groupId>
+        <artifactId>camel-velocity</artifactId>
+        <version>${camel-velocity-spring-boot-version}</version>
       </dependency>
       
       <!-- Camel Test Dependencies -->
@@ -137,7 +137,7 @@
     <repository>
       <id>redhat-ea-repository</id>
       <name>Red Hat Early Access repository (all)</name>
-      <url>https://https://maven.repository.redhat.com/earlyaccess/all/</url>
+      <url>https://maven.repository.redhat.com/earlyaccess/all/</url>
       <layout>default</layout>
       <releases>
         <enabled>true</enabled>
@@ -169,7 +169,7 @@
     <pluginRepository>
       <id>redhat-ea-repository</id>
       <name>Red Hat General Availability repository (all)</name>
-      <url>https://https://maven.repository.redhat.com/earlyaccess/all/</url>
+      <url>https://maven.repository.redhat.com/earlyaccess/all/</url>
       <layout>default</layout>
       <releases>
         <enabled>true</enabled>
