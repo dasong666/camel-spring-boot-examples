@@ -1,41 +1,163 @@
-# Simple AMQ Metrics Alerting - Design Overview
-- Set of core ActiveMQ metrics as Camel Routes
-- Each route is wrapped in a configurable timer
-- Parsing JSON response
-- Sending collected metrics as JSON payload to external webhook
-- Deployable framework using spring-boot-camel
-- Sample of ActiveMQ Metrics in this demo
-TotalMessageCount
-ConnectionCount
-PeakThreadCount
-HeapMemoryUsage
-DiskStoreUsage
-ProcessCpuLoad
+# Simple AMQ Metrics Alerting
 
-# Future Enhancement Ideas
-- Compare each metrics response to alert threshold defined in ```application.properties```
-- Trigger customized alert
-- Define happy path and alternative flows (error-handling)
-- Use Prometheus ActiveMQ plugin to collect metrics
-- Setup Grafana dashboard using Prometheus metrics data source
+This repo inteads to provide a basic monitoring application
+for a set of ActiveMQ Artemis brokers. It leverages Apache
+Camel and Spring Boot to provide an application that
+establishes a connection to a JMX RMI port to view 
+information provided by a set of broker MBeans.
 
-# ActiveMQ Artemis Monitoring API's
-- REST style Jolokia API endpoints
-- TotalMessageCount example:
-```shell
-http://{broker-host}:8161/console/jolokia/read/org.apache.activemq.artemis:broker="0.0.0.0"/TotalMessageCount
+Based on a set of configurable thresholds, the application
+can then send an alert email when a threshold is exceeded.
+
+Optionally, a summary report of the broker can be sent via
+email at a user defined periodic rate.
+
+# Design Considerations
+
+It is understood that there are many options available
+to monitor a Java Application such as an ActiveMQ Artemis
+broker. The broker provides a web console out-of-the-box that
+can be used to view the current state.
+
+Other open source solutions, such as Prometheus, can be used
+to monitor. And if running in an OpenShift / kubernetes 
+environment, linking your application metrics to the cluster
+provided Alert Monitoring UI can be very useful.
+
+Red Hat documentation provides an overview of monitoring
+considerations.  This can be found at the following 
+location: ``
+
+However, there are environments where OpenShift is not 
+available and installing additional monitoring applications
+just is not possible for a variety of reasons.
+
+This application intends to provide the most basic
+form of monitoring and alerting.
+
+# Development Environment
+
+In order to run this applicaiton, there needs to be
+at least one broker to monitor as well as an SMTP
+server that receives the alerts.
+
+The broker will need to open the JMX RMI port
+so that remote access to MBeans is possible.
+
+This is accomplished by editing the `etc/managment.xml`
+file and configuring a `connector` stanza in the xml.
+
+By default, there is a commented definition, so in 
+most cases you simply need to uncomment the definition.
+Once uncommented, you can then add a connector-host to the
+definition.
+
+The final result will look like this:
+
+```
+<management-context xmlns="http://activemq.apache.org/schema" >
+   <connector connector-port="1099" connector-host="192.168.x.x" />
+   ...
 ```
 
-# Installation
+Then you will need to provision an SMTP server. I found the 
+easiest way to accomplish this is by provisioning MailHog `http://github.com/mailhog/MailHog`.
+
+Run the following command, which will run a server on port 1025 and
+a web portal on 8025.
+
+`docker run -p 1025:1025 -p 8025:8025 mailhog/mailhog`
+
+# Application Configuration
+
+Here is an example of the amq properties definition:
+
+```
+amq:
+  brokers:
+    -
+      brokerName: artemis
+      username: joe
+      password: joe
+      host: 192.168.0.18
+      jmxrmiPort: 1099
+      # active, passive
+      role: active
+      clustered: true
+      addressesToMonitor:
+        - DLQ
+        - ExpiryQueue
+        - TEST
+```
+
+This property intends to define the brokers to be monitored,
+as well as various options.
+
+- brokerName: This is the name of the broker which will be used in the alert.
+- username: AMQ Artemis username, which requires admin role.
+- password: AMQ Artemis password for the username provided.
+- host: AMQ IP address
+- jmxrmiPort: The port defined in the management.xml
+- role: The intended role of the broker. active|passive
+- clustered: If the broker is intended to be clustered.
+- addressesToMonitor: Unbounded list of Queues that are monitored.
+
+The following defines the SMTP server properties:
+
+```
+smtp:
+  host: localhost
+  port: 1025
+  username: joe
+  password: joe
+  fromEmail: joe@joe.com
+  contentType: text/xml
+  
+```
+
+Application properties / alert Thresholds
+
+```
+application:
+  alert: 
+    enabled: true
+    period: 30000
+    broker-thresholds:
+      connections: 1
+      totalConnections: 30
+      diskStoreUsage: 0.10
+      addressMemoryPercentage: 0.1
+    address-thresholds:
+      consumers: 0
+      messageCount: 1
+  summary:
+    enabled: true
+    period: 60000 
+    
+```
+
+This stanza allows for the configuration of alert
+thresholds, as well as the summary report.
+
+- alert: configurations for alerts
+-- enabled: Whether to determine / send Broker Alerts
+-- period: (milliseconds) internal to determine if an alert is present
+-- broker-thresholds: list of broker alert thresholds, where if the number is exceeded an alert is sent.
+-- address-thresholds: list of address alert threshold, where if the number is exceeded an alert is sent.
+- summary: configuration for summary report
+-- consumers: threshold number of expected consumers for the address (queue | topic)
+-- messageCount: threshold number of messages present on the address.
+
+# Building / Installation
+
 - Clone this repository
 - A sample shell script is included in the home directory of repo ```amq-alerts/mycurl.sh```
 - Note: the script is pointing to a local instance of ActiveMQ/Artemis.  Please update the according to your own environment.
-- Edit ```src/main/resources/application.properties``` with following changes according to your specific environment
-- Update the property ```management.endpoints.config``` to point to the absolute path containing ```mycurl.sh```
-- For example: ```management.endpoints.config = /Users/foobar/amq-alerts/mycurl.sh```
-- Update the property ```application.webhook.endpoint``` to point to your own instance of Webhook/alert receiver
-- For example: ```application.webhook.endpoint = https://{your site}```
-- From the ```amq-alerts``` subdirectory containing your ```pom.xml``` run the following Maven command to start the application
+- Edit ```src/main/resources/application.yml``` with following changes according to your specific environment
+-- configure SMTP server properties
+-- configure AMQ broker properties
+-- configure Alert thresholds. 
+
 ```shell
 mvn spring-boot:run
 ```
