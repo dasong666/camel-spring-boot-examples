@@ -19,7 +19,6 @@ import org.apache.activemq.artemis.api.core.management.QueueControl;
 
 public class AmqArtemisJmxManager {
 
-	private static final String DEFAULT_JMX_URL = "service:jmx:rmi:///jndi/rmi://192.168.1.167:1099/jmxrmi";
 
 	private final String jmxrmiUrl;
 
@@ -50,7 +49,7 @@ public class AmqArtemisJmxManager {
 		String[] creds = { username, password };
 		env.put(JMXConnector.CREDENTIALS, creds);
 
-		connector = JMXConnectorFactory.connect(new JMXServiceURL(DEFAULT_JMX_URL), env);
+		connector = JMXConnectorFactory.connect(new JMXServiceURL(this.jmxrmiUrl), env);
 		serverConnection = connector.getMBeanServerConnection();
 
 	}
