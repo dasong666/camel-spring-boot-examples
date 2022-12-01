@@ -4,12 +4,37 @@ Hello,
 The following broker: ${headers.brokerName} is identified
 as having a broker role of ${headers.brokerRole}, however 
 their current role is ${headers.brokerRoleState}.
-#end
 
+#end
 #if( ${headers.clusteredAlert} == "true" )
 The following broker: ${headers.brokerName} is identified
 as having a clustered state of ${headers.isClustered}, however 
 their current state is ${headers.clusteredState}.
+
+#end
+#if( ${headers.connectionsAlert} == "true" )
+The following broker: ${headers.brokerName} is identified
+as having ${headers.connectionsCurrent} current connections which exceeds the threshold
+of ${headers.connectionsThreshold}.
+
+#end
+#if( ${headers.totalConnectionsAlert} == "true" )
+The following broker: ${headers.brokerName} is identified
+as having ${headers.totalConnectionsCurrent} total connections which exceeds the threshold
+of ${headers.totalConnectionsThreshold}.
+
+#end
+#if( ${headers.diskStorageAlert} == "true" )
+The following broker: ${headers.brokerName} is identified
+as having ${headers.diskStorageCurrent} disk storage which exceeds the threshold
+of ${headers.diskStorageThreshold}.
+
+#end
+#if( ${headers.addressMemoryPercentageAlert} == "true" )
+The following broker: ${headers.brokerName} is identified
+as having ${headers.addressMemoryPercentageCurrent} memory percentage which exceeds the threshold
+of ${headers.addressMemoryPercentageThreshold}.
+
 #end
 
 Enjoy!

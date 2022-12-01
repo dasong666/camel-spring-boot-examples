@@ -12,6 +12,14 @@ Total Connections      : ${headers.totalConnections}
 
 Address Stats
 
-Number of Address ${headers.addressList.size} 
+#foreach($queueSummary in ${body})
+Queue Name           : $queueSummary.queueName
+------------------------------
+Consumer Count       : $queueSummary.consumerCount
+Message Added        : $queueSummary.messageAdded
+Message Acknowledged : $queueSummary.messageAcknowledged
+Message Count        : $queueSummary.messageCount
+
+#end
 
 Enjoy!

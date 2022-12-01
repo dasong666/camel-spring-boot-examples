@@ -4,21 +4,21 @@ import org.apache.camel.builder.RouteBuilder;
 import org.springframework.stereotype.Component;
 
 @Component
-public class EmailAlertNotificationRouteBuilder extends RouteBuilder {
+public class EmailQueueAlertNotificationRouteBuilder extends RouteBuilder {
 
 	@Override
 	public void configure() throws Exception {
 
 		// @formatter:off
-		from("direct:emailBrokerAlertNotification")
-			.routeId("email.alert.notification")
+		from("direct:emailQueueAlertNotification")
+			.routeId("email.queueAlert.notification")
 			
 			.choice()
 									
 			// alert Notifications 
-			.when(header("alertExists").contains("true"))
-				.log("Broker Alert Exists")
-				.to("velocity:BrokerAlertTemplate.vm")
+			.when(header("queueAlertExists").contains("true"))
+				.log("Queue Alert Exists")
+				.to("velocity:QueueAlertTemplate.vm")
 				.to("smtp://{{smtp.host}}:{{smtp.port}}?username={{smtp.username}}&password={{smtp.password}}&from={{smtp.fromEmail}}&contentType={{smtp.contentType}}")
 				
 			.otherwise()

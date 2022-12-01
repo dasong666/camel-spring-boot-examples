@@ -1,0 +1,16 @@
+Hello,
+
+#if( ${headers.messageCountAlert} == "true" )
+The ${headers.queueName} queue on the broker ${headers.brokerName} has a message
+count of ${headers.messageCountCurrent}, and the threshold for 
+message count is ${headers.messageCountThreshold}.
+
+#end
+#if( ${headers.consumerCountAlert} == "true" )
+The ${headers.queueName} queue on the broker ${headers.brokerName} has a consumer
+count of ${headers.consumerCount}, and the threshold for 
+consumer count is ${headers.consumerCountThreshold}.
+
+#end
+
+Enjoy!
