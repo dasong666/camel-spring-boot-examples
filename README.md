@@ -161,3 +161,55 @@ thresholds, as well as the summary report.
 ```shell
 mvn spring-boot:run
 ```
+# Steps to Create a New Alert (Message Ack Count Example)
+
+- In ActiveMQ Console in the left-hand side ```JMX``` section, select your queue and choose an attribute you want to alert on (e.g. we are using ```MessagesAcknowledged``` attribute for this example)
+
+![](amq-console.png)
+
+- Update ```src/main/resources/application.yml``` and add a new entry ```messageAckCount``` to ```application.alert.address-thresholds```
+```shell
+application:
+  alert: 
+    enabled: true
+    period: 30000
+    broker-thresholds:
+      connections: 1
+      totalConnections: 30
+      diskStoreUsage: 0.10
+      addressMemoryPercentage: 0.1
+    address-thresholds:
+      consumers: 3
+      messageCount: 0
+      messageAckCount: -1
+```
+- Update ```src/main/resources/QueueAlertTemplate.vm``` to add new custom email alert message for Message Ack Count
+```shell
+#if( ${headers.MessageAckCountAlert} == "true" )
+The ${headers.queueName} queue on the broker ${headers.brokerName} has Unack message
+count of ${headers.MessageAckCountCurrent}, and the threshold for 
+consumer count is ${headers.MessageAckCountThreshold}.
+#end
+```
+- Update ```src/main/java/com/redhat/consulting/config/AddressAlertThresholds.java``` with following changes:
+- Add new internal local variable ```private int messageAckCount```
+- Add new getter/setting for messageAckCount
+```shell
+   public int getMessageAckCount() {
+		return messageAckCount;
+	}
+
+	public void setMessageAckCount(int messageAckCount) {
+		this.messageAckCount = messageAckCount;
+	}
+```
+- Update ```src/main/java/com/redhat/consulting/processors/DetermineQueueAlertProcessor.java``` with following changes:
+- Add a new conditional block in the ```process``` method
+```shell
+if (queueControl.getMessagesAcknowledged() > addressAlertThresholds.getMessageAckCount()) {
+			exchange.getIn().setHeader("addressAlertExists", true);
+			exchange.getIn().setHeader("MessageAckCountAlert", true);
+			exchange.getIn().setHeader("MessageAckCountCurrent", queueControl.getMessagesAcknowledged());
+			exchange.getIn().setHeader("MessageAckCountThreshold", addressAlertThresholds.getMessageAckCount());
+}
+```
