@@ -213,3 +213,10 @@ if (queueControl.getMessagesAcknowledged() > addressAlertThresholds.getMessageAc
 			exchange.getIn().setHeader("MessageAckCountThreshold", addressAlertThresholds.getMessageAckCount());
 }
 ```
+
+## Java API References
+
+- QueueControl: https://activemq.apache.org/components/artemis/documentation/javadocs/javadoc-latest/org/apache/activemq/artemis/api/core/management/QueueControl.html
+- ActiveMQServerControl: https://activemq.apache.org/components/artemis/documentation/javadocs/javadoc-latest/org/apache/activemq/artemis/api/core/management/ActiveMQServerControl.html
+
+
